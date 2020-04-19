@@ -1,0 +1,10 @@
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.csprojAssemblyReference.cache
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.Interface.resources
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.Properties.Resources.resources
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.csproj.GenerateResource.cache
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\bin\Debug\stationMeteo.exe.config
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\bin\Debug\stationMeteo.exe
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\bin\Debug\stationMeteo.pdb
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.exe
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.pdb
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.MeasurementConfiguration.resources

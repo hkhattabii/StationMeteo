@@ -8,3 +8,5 @@ C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\bin\Debug\stationMe
 C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.exe
 C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.pdb
 C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.MeasurementConfiguration.resources
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.Authentication.resources
+C:\Users\hcodi\Desktop\COURS\Q4\C#\stationMeteo\stationMeteo\obj\Debug\stationMeteo.UserCreation.resources

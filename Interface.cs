@@ -15,6 +15,7 @@ namespace stationMeteo
 
         private Random random;
         private int CELL_SIZE = 30;
+        private int timePassedInSecond;
         private List<Measure> knownMeasures;
         private List<Measure> measuresReceived;
         private List<SystemID> knownSystemID;
@@ -22,6 +23,9 @@ namespace stationMeteo
         private String[] alarmSources = { "0x55", "0" };
         private String[] alarmDetails = { "0x00", "0x55", "0xaa", "0xff" };
         private String[] alarmStatuses = { "0x00", "0x55", "0xaa", "0xff" };
+        private Database database;
+        public User user;
+
 
         public Interface()
         {
@@ -31,6 +35,7 @@ namespace stationMeteo
 
         private void Interface_Load(object sender, EventArgs e)
         {
+            timePassedInSecond = 0;
             trame_timer.Start();
             watchdog_timer.Start();
             random = new Random();
@@ -38,16 +43,28 @@ namespace stationMeteo
             measuresReceived = new List<Measure>();
             knownSystemID = new List<SystemID>();
             alarms = new List<Measure>();
+            database = new Database();
+            user = null;
             initUi();
             
         }
 
         private void initUi()
         {
+            tabControl1.TabPages[4].Enabled = false;
             buildMeasureGrid();
             buildConfigurationGrid();
             buildAlarmGrid();
             fillComboBoxAlarmID();
+        }
+
+        public void login(User user)
+        {
+            this.user = user;
+            if (user.permission.allowConfigAlarm == true)
+            {
+                tabControl1.TabPages[4].Enabled = true;
+            }
         }
 
         private void buildMeasureGrid()
@@ -65,7 +82,7 @@ namespace stationMeteo
             {
                 DataRow dataRow = dataTable.NewRow();
                 dataRow[0] = measure.ID;
-                dataRow[1] = measure.lastMeasure;
+                dataRow[1] = measure.tenLastMeasures.Last().Value;
                 dataRow[2] = measure.units;
                 dataRow[3] = measure.time;
                 dataRow[4] = measure.alarmLowText;
@@ -198,6 +215,19 @@ namespace stationMeteo
 
         }
 
+
+        private void buildChart(Measure measure)
+        {
+            chart_measure.Series["Mesure"].Points.Clear();
+            chart_measure.ChartAreas[0].AxisY.Maximum = (double)measure.maxValue;
+            chart_measure.ChartAreas[0].AxisY.Minimum = (double)measure.minValue;
+            foreach(KeyValuePair<int, Byte> lastMeasure in measure.tenLastMeasures)
+            {
+                chart_measure.Series["Mesure"].Points.AddXY(lastMeasure.Key, lastMeasure.Value);
+            }
+        }
+
+
         private void fillComboBoxAlarmID()
         {
             foreach (Measure measure in knownMeasures)
@@ -221,6 +251,7 @@ namespace stationMeteo
                 knownMeasures.Add(newMeasure);
                 knownMeasures.Sort((knownMeasure1, knownMeasure2) => knownMeasure1.ID.CompareTo(knownMeasure2.ID));
                 cb_alarmID.Items.Add(newMeasure.ID);
+                cb_idChart.Items.Add(newMeasure.ID);
                 buildMeasureGrid();
                 buildConfigurationGrid();
             }
@@ -255,10 +286,10 @@ namespace stationMeteo
             buildSystemIDGrid(); 
         }
 
-        private void updateMeasure(Measure measure, int value)
+        public void updateMeasure(Measure measure, int value)
         {
-            Byte? rightValue = (Byte) ((value / ((Math.Pow(256, 3)) - 1) * (measure.maxValue - measure.minValue) + measure.minValue));
-            measure.lastMeasure = rightValue;
+            Byte rightValue = (Byte) ((value / ((Math.Pow(256, 3)) - 1) * (measure.maxValue - measure.minValue) + measure.minValue));
+            measure.tenLastMeasures.Add(timePassedInSecond, rightValue);
             if (rightValue > measure.alarmHigh)
             {
                 measure.alarmHighText = "ALARM";
@@ -274,6 +305,8 @@ namespace stationMeteo
             {
                 measure.alarmLowText = "OK";
             }
+
+
             buildMeasureGrid();
         }
 
@@ -283,8 +316,6 @@ namespace stationMeteo
         {
             Byte ID = (Byte) random.Next(1, 51); //Crée un id
             int value = random.Next(0, 16000000);
-
-
 
             Tram tram = new Tram(ID, value);
             Measure isKnownMeasure = knownMeasures.Find(knownMeasure => knownMeasure.ID == tram.ID); //Si la mesure à déjà été configuré, met à jour sa valeur sinon affiche la tram indefinie dans le tableau de configuration
@@ -298,6 +329,8 @@ namespace stationMeteo
                 displayIDToConfigurationTab(tram);
                 
             }
+
+            timePassedInSecond += 1;
 
 
             
@@ -332,17 +365,6 @@ namespace stationMeteo
 
         }
 
-        private void configurationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-         MeasurementConfiguration measurementConfigurationForm = new MeasurementConfiguration(this, measuresReceived);
-        measurementConfigurationForm.Show();
-        }
-
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         private void onAlarmLoaded(object sender, EventArgs e)
         {
             Byte selectedID = (Byte)cb_alarmID.SelectedItem;
@@ -363,5 +385,61 @@ namespace stationMeteo
             lb_minMeasure.Text = measure.minValue.ToString();
             lb_maxMeasure.Text = measure.maxValue.ToString();
         }
+
+        private void onChartIDSelected(object sender, EventArgs e)
+        {
+            Byte ID = (Byte)cb_idChart.SelectedItem;
+            Measure measure = knownMeasures.Find(knownMeasure => knownMeasure.ID == ID);
+            buildChart(measure);
+            
+        }
+
+        private void goToConfigurationForm(object sender, EventArgs e)
+        {
+            if (user != null && user.permission.allowCreateID)
+            {
+                MeasurementConfiguration measurementConfigurationForm = new MeasurementConfiguration(this, measuresReceived);
+                measurementConfigurationForm.Show();
+            }
+            else
+            {
+                MessageBox.Show("Vous n'avez pas l'autorisation de configurer des ID !", "Contacter votre administrateur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void goToAuthenticationForm(object sender, EventArgs e)
+        {
+            Authentication authenticationForm = new Authentication(this);
+            authenticationForm.ShowDialog();
+        }
+
+        private void goToUserCreationForm(object sender, EventArgs e)
+        {
+            
+            if (user != null && user.permission.allowUserCreation == true)
+            {
+                UserCreation userCreationForm = new UserCreation(this);
+                userCreationForm.Show();
+            } else
+            {
+                MessageBox.Show("Vous n'avez pas l'autorisation de rajouter des utilisateurs !", "Contacter votre administrateur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+ 
+
+        }
+
+        private void onDisconnect(object sender, EventArgs e)
+        {
+            if (user != null)
+            {
+                MessageBox.Show("Vous vous êtes déconnecté ", "Vous n'avez plus de de droits", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                user = null;
+                tabControl1.TabPages[4].Enabled = false;
+            }
+     
+        }
+
     }
 }

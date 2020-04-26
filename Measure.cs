@@ -15,7 +15,7 @@ namespace stationMeteo
 
         public Byte? minValue { get; private set; }
         public Byte? maxValue { get; private set; }
-        public Byte? lastMeasure { get; set; }
+        public Dictionary<int, Byte> tenLastMeasures { get; set; }
         public Byte? time { get; private set; }
 
         public Byte? alarmLow { get; set; }
@@ -25,7 +25,7 @@ namespace stationMeteo
         public String alarmHighText { get; set; }
 
 
-        public Measure(Byte ID, String measurementType, String units, String format ,Byte? minValue, Byte? maxValue, Byte? lastMeasure, Byte? time, Byte? alarmLow, Byte? alarmHigh )
+        public Measure(Byte ID, String measurementType, String units, String format ,Byte? minValue, Byte? maxValue, Dictionary<int, Byte> tenLastMeasures, Byte? time, Byte? alarmLow, Byte? alarmHigh )
         {
             this.ID = ID;
             this.measurementType = measurementType;
@@ -33,7 +33,7 @@ namespace stationMeteo
             this.format = format;
             this.minValue = minValue;
             this.maxValue = maxValue;
-            this.lastMeasure = lastMeasure;
+            this.tenLastMeasures = tenLastMeasures;
             this.time = time;
             this.alarmLow = alarmLow;
             this.alarmHigh = alarmHigh;
@@ -48,7 +48,7 @@ namespace stationMeteo
                 + this.format + "-"
                 + this.minValue + "-"
                 + this.maxValue + "]"
-                + this.lastMeasure + "]"
+                + this.tenLastMeasures + "]"
                 + this.time + "]"
                 + this.alarmLow + "]"
                 + this.alarmHigh + "]";

@@ -90,7 +90,8 @@ namespace stationMeteo
 
                 if (typeIndex != 0)
                 {
-                    measure = new Measure(idSelected, typeSelected, units, "24bits", minValue, maxValue, 0, 0,null, null);
+                    measure = new Measure(idSelected, typeSelected, units, "24bits", minValue, maxValue, new Dictionary<int, Byte>(), 0,null, null);
+                    measure.tenLastMeasures.Add(0, 0);
                     measure.alarmHighText = "OK";
                     measure.alarmLowText = "OK";
 
@@ -127,5 +128,16 @@ namespace stationMeteo
             }
         }
 
+        private void onDeleteID(object sender, EventArgs e)
+        {
+            if (mainInterface.user.permission.allowDestroyID == true && cb_ID.SelectedIndex != -1)
+            {
+
+            } else
+            {
+                MessageBox.Show("Vous n'avez pas l'autorisation de supprimer un ID !", "Contacter votre administrateur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+        }
     }
 }

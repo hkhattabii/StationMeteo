@@ -29,11 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.CustomLabel customLabel1 = new System.Windows.Forms.DataVisualization.Charting.CustomLabel();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.trame_timer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_measures = new System.Windows.Forms.TabPage();
             this.dgv_measures = new System.Windows.Forms.DataGridView();
             this.tab_chart = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.cb_idChart = new System.Windows.Forms.ComboBox();
+            this.lable2 = new System.Windows.Forms.Label();
+            this.chart_measure = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tab_idSystem = new System.Windows.Forms.TabPage();
             this.dgv_systemID = new System.Windows.Forms.DataGridView();
             this.tab_configurations = new System.Windows.Forms.TabPage();
@@ -56,10 +65,16 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connexionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deconnexionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.créeUnUtilisateurToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.watchdog_timer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tab_measures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_measures)).BeginInit();
+            this.tab_chart.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_measure)).BeginInit();
             this.tab_idSystem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_systemID)).BeginInit();
             this.tab_configurations.SuspendLayout();
@@ -120,6 +135,8 @@
             // 
             // tab_chart
             // 
+            this.tab_chart.Controls.Add(this.groupBox2);
+            this.tab_chart.Controls.Add(this.chart_measure);
             this.tab_chart.Location = new System.Drawing.Point(4, 22);
             this.tab_chart.Margin = new System.Windows.Forms.Padding(2);
             this.tab_chart.Name = "tab_chart";
@@ -128,6 +145,70 @@
             this.tab_chart.TabIndex = 1;
             this.tab_chart.Text = "Chart";
             this.tab_chart.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.BackColor = System.Drawing.Color.Gainsboro;
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.cb_idChart);
+            this.groupBox2.Controls.Add(this.lable2);
+            this.groupBox2.Location = new System.Drawing.Point(16, 451);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(876, 62);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "ID";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(320, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(124, 31);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // cb_idChart
+            // 
+            this.cb_idChart.FormattingEnabled = true;
+            this.cb_idChart.Location = new System.Drawing.Point(114, 25);
+            this.cb_idChart.Name = "cb_idChart";
+            this.cb_idChart.Size = new System.Drawing.Size(200, 21);
+            this.cb_idChart.TabIndex = 1;
+            this.cb_idChart.SelectedIndexChanged += new System.EventHandler(this.onChartIDSelected);
+            // 
+            // lable2
+            // 
+            this.lable2.AutoSize = true;
+            this.lable2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lable2.Location = new System.Drawing.Point(7, 25);
+            this.lable2.Name = "lable2";
+            this.lable2.Size = new System.Drawing.Size(101, 20);
+            this.lable2.TabIndex = 0;
+            this.lable2.Text = "ID selection :";
+            // 
+            // chart_measure
+            // 
+            chartArea1.AxisX.CustomLabels.Add(customLabel1);
+            chartArea1.AxisX.Interval = 1D;
+            chartArea1.AxisX.IntervalOffset = 1D;
+            chartArea1.AxisX.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
+            chartArea1.Name = "ChartArea1";
+            this.chart_measure.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart_measure.Legends.Add(legend1);
+            this.chart_measure.Location = new System.Drawing.Point(0, 0);
+            this.chart_measure.Name = "chart_measure";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Mesure";
+            this.chart_measure.Series.Add(series1);
+            this.chart_measure.Size = new System.Drawing.Size(921, 469);
+            this.chart_measure.TabIndex = 0;
+            this.chart_measure.Text = "Measure";
             // 
             // tab_idSystem
             // 
@@ -343,12 +424,14 @@
             this.menuStrip1.Size = new System.Drawing.Size(950, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fichierToolStripMenuItem
             // 
             this.fichierToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configurationToolStripMenuItem});
+            this.configurationToolStripMenuItem,
+            this.connexionToolStripMenuItem,
+            this.deconnexionToolStripMenuItem,
+            this.créeUnUtilisateurToolStripMenuItem});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
             this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.fichierToolStripMenuItem.Text = "Fichier";
@@ -356,9 +439,30 @@
             // configurationToolStripMenuItem
             // 
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
-            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.configurationToolStripMenuItem.Text = "Configuration";
-            this.configurationToolStripMenuItem.Click += new System.EventHandler(this.configurationToolStripMenuItem_Click);
+            this.configurationToolStripMenuItem.Click += new System.EventHandler(this.goToConfigurationForm);
+            // 
+            // connexionToolStripMenuItem
+            // 
+            this.connexionToolStripMenuItem.Name = "connexionToolStripMenuItem";
+            this.connexionToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.connexionToolStripMenuItem.Text = "Connexion";
+            this.connexionToolStripMenuItem.Click += new System.EventHandler(this.goToAuthenticationForm);
+            // 
+            // deconnexionToolStripMenuItem
+            // 
+            this.deconnexionToolStripMenuItem.Name = "deconnexionToolStripMenuItem";
+            this.deconnexionToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.deconnexionToolStripMenuItem.Text = "Deconnexion";
+            this.deconnexionToolStripMenuItem.Click += new System.EventHandler(this.onDisconnect);
+            // 
+            // créeUnUtilisateurToolStripMenuItem
+            // 
+            this.créeUnUtilisateurToolStripMenuItem.Name = "créeUnUtilisateurToolStripMenuItem";
+            this.créeUnUtilisateurToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.créeUnUtilisateurToolStripMenuItem.Text = "Crée un utilisateur";
+            this.créeUnUtilisateurToolStripMenuItem.Click += new System.EventHandler(this.goToUserCreationForm);
             // 
             // watchdog_timer
             // 
@@ -381,6 +485,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tab_measures.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_measures)).EndInit();
+            this.tab_chart.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_measure)).EndInit();
             this.tab_idSystem.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_systemID)).EndInit();
             this.tab_configurations.ResumeLayout(false);
@@ -425,5 +533,13 @@
         private System.Windows.Forms.Label lb_alarmID;
         private System.Windows.Forms.Button bt_deleteAlarm;
         private System.Windows.Forms.Button bt_loadAlarm;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_measure;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox cb_idChart;
+        private System.Windows.Forms.Label lable2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem connexionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem créeUnUtilisateurToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deconnexionToolStripMenuItem;
     }
 }
